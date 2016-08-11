@@ -1,0 +1,34 @@
+{
+  "manifest_version": 2,
+
+  "name": "Tab Indulgence",
+  "description": "Bookmarks all windows and then closes them.",
+  "version": "0.1",
+
+  "browser_action":
+  {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions":
+  [
+    "bookmarks",
+    "tabs"
+  ],
+
+  // "background": 
+  // {
+  //   "scripts": 
+  //   [
+  //     "background.js"
+  //   ]
+  // },
+
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'"
+}
+
+/* * * * * * * * * * * * *
+ * AUTHOR:  Rahul Butani *
+ * DATE:    Août 9, 2016 *
+ * VERSION: 0.0.1        *
+ * * * * * * * * * * * * */
