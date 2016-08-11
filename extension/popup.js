@@ -1,29 +1,56 @@
 var excludeSessionSaves = true;
+var maxDepthParentFoldr = (1 + (2 * (2)));
 
 var rawBkmrkTree;
 var folderNames = [];
 
 $(document).ready(function()
 {
-  // Get current bookmark folders/subfolders...
-  chrome.bookmarks.getTree(
-    function(tree)
+  var reload = document.getElementById("reload");
+  reload.addEventListener("click",
+
+    function()
     {
-      updateStatus("Getting tree...");
-      
-      rawBkmrkTree = tree;
+      // Get current bookmark folders/subfolders...
+      chrome.bookmarks.getTree
+      (
+        //numEntriesParentPTH,
 
-      cleanTree(rawBkmrkTree[0], "");
+        function(tree)
+        {
+          updateStatus("Getting tree...");
+          
+          rawBkmrkTree = tree;
 
-      populateParentFolderOptions(folderNames);
+          folderNames = [];
+          cleanTree(rawBkmrkTree[0], "");
 
-      $('select option:contains(' + localStorage["defaultParentFolder"]+ ')').prop('selected',true);
+          localStorage["savedFolderStructure"] = JSON.stringify(folderNames);
 
-      updateStatus("Choose options:");
-    });
+          populateParentFolderOptions(folderNames);
 
+          $('select option:contains(' + localStorage["defaultParentFolder"]+ ')').prop('selected',true);
+
+          updateStatus("Choose options:");
+        }
+      );
+    },
+
+    false
+  );
+
+  if(localStorage["savedFolderStructure"])
+  {
+    folderNames = JSON.parse(localStorage["savedFolderStructure"]);
+  }
+
+  populateParentFolderOptions(folderNames);
+
+  // $('select option:contains(' + localStorage["defaultParentFolder"]+ ')').prop('selected',true);
   $(':checkbox').prop('checked',localStorage["closeWindowsBoolean"]);
   $('#fName').val("Session Save Data ".concat(formattedDate(new Date())));
+
+  updateStatus("Choose options:");
 
   $('form').on('submit', function()
     {
@@ -102,7 +129,18 @@ function populateParentFolderOptions(filteredTree)
     fragment.appendChild(opt);
   });
 
+  if(localStorage['inject'] != "undefined")
+  {
+    var opt       = document.createElement('option');
+    opt.innerHTML = localStorage['inject'];
+    opt.value     = localStorage['inject'];
+    fragment.appendChild(opt);
+  }
+
+  document.getElementById('location').innerHTML = "";
   document.getElementById('location').appendChild(fragment);
+
+  $('select option:contains(' + localStorage["defaultParentFolder"]+ ')').prop('selected',true);
 
   return;
 }
@@ -110,8 +148,9 @@ function populateParentFolderOptions(filteredTree)
 function cleanTree(raw, prepend)
 {
   updateStatus("Cleaning tree...");
+
   //console.log("DebugA: Called with");
-  //console.log(raw);
+  //console.log("Processing " + raw.title);
 
   /// Check if top element is a (valid) folder
 
@@ -139,7 +178,7 @@ function cleanTree(raw, prepend)
   if(raw.title)
   {
     //console.log("Adding " + raw.title + "...");
-    folderNames.push(standardizeNumber(raw.id, 4).concat(" | ").concat(prepend).concat(raw.title));
+    folderNames.push(standardizeNumber(raw.id, 6).concat(" | ").concat(prepend).concat(raw.title));
   }
 
 
@@ -147,10 +186,15 @@ function cleanTree(raw, prepend)
 
   for(var i = 0; i < raw.children.length; i++)
   {
+    var child = raw.children[i];
+    //console.log("index is at " + i);
     // If the child is a folder, send it through the process...
-    if(raw.children[i].children !== "undefined")
+    if(child.hasOwnProperty("children"))
     {
-      cleanTree(raw.children[i], "> ".concat(prepend));
+      if(prepend.length < maxDepthParentFoldr)
+      {
+        cleanTree(child, "> ".concat(prepend));
+      }
     }
   }
 
@@ -159,7 +203,7 @@ function cleanTree(raw, prepend)
 
 function standardizeNumber(numString, requiredChars)
 {
-  while(numString.length != requiredChars)
+  while(numString.length < requiredChars)
   {
     numString = "0".concat(numString);
   }

@@ -34,11 +34,13 @@
   <body>
     <div id="status"></div><br>
     
+    <input type="button" value="Reload Bookmarks" id="reload">
+    
     <form>
       Location: <select name="parentFolder" id="location"></select><br>
       Folder Name: <input type="text" name="folderName" id="fName" size="25"><br>
 
-      <input type="hidden" name="closeWindows" value="" /> <!-- Hidden because HTML is stupid.. -->
+      <input type="hidden" name="closeWindows" value="" > <!-- Hidden because HTML is stupid.. -->
       Close All Windows? <input type="checkbox" name="closeWindows" id="cW" value="true" checked><br><br>
 
       <input type="submit" value="Bookmark All!">
