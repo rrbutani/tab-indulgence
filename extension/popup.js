@@ -1,4 +1,4 @@
-var excludeSessionSaves = false;
+var excludeSessionSaves = true;
 
 var rawBkmrkTree;
 var folderNames = [];
@@ -75,9 +75,9 @@ function processSubmit(data)
   localStorage["defaultParentFolder"] = data["parentFolder"];
   localStorage["closeWindowsBoolean"] = data["closeWindows"];
 
-  // // Do the thing
-  // updateStatus("Running...");
-  // chrome.extension.getBackgroundPage().bookmarkAll(data["parentFolder"], data["folderName"], data["closeWindows"]);
+  // Do the thing
+  updateStatus("Running...");
+  chrome.extension.getBackgroundPage().handler(data["parentFolder"], data["folderName"], data["closeWindows"]);
 
 }
 
@@ -150,7 +150,7 @@ function cleanTree(raw, prepend)
     // If the child is a folder, send it through the process...
     if(raw.children[i].children !== "undefined")
     {
-      cleanTree(raw.children[i], "  ".concat(prepend));
+      cleanTree(raw.children[i], "> ".concat(prepend));
     }
   }
 
@@ -295,6 +295,6 @@ function formattedDate(d)
 
 /* * * * * * * * * * * * *
  * AUTHOR:  Rahul Butani *
- * DATE:    Août 9, 2016 *
- * VERSION: 0.0.1        *
+ * DATE:    Aug 11, 2016 *
+ * VERSION: 0.2.0        *
  * * * * * * * * * * * * */
