@@ -3,7 +3,7 @@
 
   "name": "Tab Indulgence",
   "description": "Bookmarks all windows and then closes them.",
-  "version": "0.3.0",
+  "version": "0.3.1",
 
   "browser_action":
   {
@@ -30,5 +30,5 @@
 /* * * * * * * * * * * * *
  * AUTHOR:  Rahul Butani *
  * DATE:    Aug 11, 2016 *
- * VERSION: 0.3.0        *
+ * VERSION: 0.3.1        *
  * * * * * * * * * * * * */
