@@ -2,11 +2,11 @@ var numWindows, numTabs, parentId;
 
 function handler(parentFolder, folderName, closeWindows)
 {
-	/// Preprocessing stuff...
+	// Preprocessing stuff...
 	parentId = parentFolder.substring(0, parentFolder.indexOf(" |"));
 	numTabs  = 0;
 
-	/// Kick it all off
+	// Kick it all off
 	checkIfFolderExists(parentId, folderName, closeWindows);
 }
 
@@ -28,14 +28,14 @@ function checkIfFolderExists(parentId, folderName, closeWindows)
 				if(subElement.hasOwnProperty("children") && //Check for folder...
 				   subElement.title == folderName)       //..and now check name
 				{
-					//If the folder already exists...
+					// If the folder already exists...
 					console.log("Specified folder already exists; scanning..");
 					getOffset(subElement.id, closeWindows);
 					return;
 				}
 			}
 
-			//If folder doesn't already exist, continue normally
+			// If folder doesn't already exist, continue normally
 			createParentFolder(parentId, folderName, closeWindows);
 		}
 	);
@@ -178,5 +178,5 @@ console.log("background.js loaded.");
 /* * * * * * * * * * * * *
  * AUTHOR:  Rahul Butani *
  * DATE:    Aug 11, 2016 *
- * VERSION: 0.3.0        *
+ * VERSION: 0.3.1        *
  * * * * * * * * * * * * */
