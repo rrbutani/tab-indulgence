@@ -340,5 +340,5 @@ function formattedDate(d)
 /* * * * * * * * * * * * *
  * AUTHOR:  Rahul Butani *
  * DATE:    Aug 11, 2016 *
- * VERSION: 0.2.0        *
+ * VERSION: 0.3.0        *
  * * * * * * * * * * * * */
